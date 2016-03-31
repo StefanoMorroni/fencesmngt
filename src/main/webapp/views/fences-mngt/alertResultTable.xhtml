@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:body>
+
+	<h:form id="alarmGridForm">
+	<p:messages id="mainMessages" autoUpdate="true" />
+	
+		<p:confirmDialog widgetVar="deleteDial" message="#{i18n['confirm-alarm-delete']}" severity="alert">
+				<p:commandButton id="confirm" value="#{i18n['button-confirm-delete']}" action="#{alertManagementBean.deleteAlarm}" update="alarmTable" oncomplete="deleteDial.hide()" />
+				<p:commandButton id="cancel" value="#{i18n['button-cancel-delete']}" onclick="deleteDial.hide()" type="button"/>
+		</p:confirmDialog>
+		
+		<p:dataTable id="alarmTable" value="#{alertManagementBean.alarmList}" var="alarm" rowKey="#{alarm.alarmId}" styleClass="vehicles-table" paginator="true" rows="10" rowsPerPageTemplate="5,10,15" emptyMessage="#{i18n['table-record-not-found']}">
+			
+ 			<f:facet name="header">
+				<p:commandButton id="createNewAlarm" value="Crea Nuovo" action="#{alertManagementBean.createAlarm}" update=":fenceAlarmTabs:addAlarmForm" oncomplete="addAlarm.show()" style="float:right; margin-bottom:5px;" />
+			</f:facet>
+			
+			<p:column id="nameAlarm" headerText="Nome Allarme">
+				#{alarm.name}
+			</p:column>
+			
+			<p:column id="alarmDesc" headerText="Descrizione">
+				#{alarm.description}
+			</p:column>
+			
+			<p:column id="alarmCode" headerText="Codice Allarme">
+				#{alarm.alarmCode}
+			</p:column>
+		 
+			<p:column id="alarmDirect" headerText="Ingresso Uscita">
+				#{alarm.directions}
+			</p:column>
+			
+			<p:column id="mailEnabled" headerText="Servizio EMAIL">
+				#{alarm.enableMailAlarm}
+			</p:column>
+			
+			<p:column id="mailAddress" headerText="Email">
+				#{alarm.mailAddress}
+			</p:column>
+			
+			<p:column id="alarmIntersect" headerText="Gestione Intersezioni">
+				#{alarm.intersection}
+			</p:column>
+			
+			<p:column id="alarmEnabled" headerText="Abilitato">
+				#{alarm.enable}
+			</p:column>
+			
+			<p:column id="updateColumn" style="width:0%">
+				<p:commandButton id="updateAlarm" title="#{i18n['alarm-update']}" update=":fenceAlarmTabs:addAlarmForm" oncomplete="addAlarm.show()" icon="ui-icon-pencil" actionListener="#{alertManagementBean.loadAlarmEntityModelBean(alarm)}" />
+			</p:column>
+			
+			<p:column id="deleteColumn" style="width:0%">
+				<p:commandButton id="deleteAlarm" title="#{i18n['alarm-delete']}" oncomplete="deleteDial.show()" icon="ui-icon-trash">
+					<f:setPropertyActionListener value="#{alarm}" target="#{alertManagementBean.alarmEntry}" />
+				</p:commandButton>
+			</p:column>
+			
+		</p:dataTable>
+			
+	</h:form>
+	</h:body>
+</f:view>

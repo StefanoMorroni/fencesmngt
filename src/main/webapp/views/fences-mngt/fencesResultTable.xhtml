@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:body>
+	
+		<h:form id="fencesGridForm">
+		<p:messages id="mainMessages" autoUpdate="true" />
+		
+		<p:confirmDialog widgetVar="deleteDialog" message="#{i18n['confirm-alarm-delete']}" severity="alert">
+				<p:commandButton id="confirm" value="#{i18n['button-confirm-delete']}" action="#{fencesManagementBean.deleteFence}" update="fencesTable" oncomplete="deleteDialog.hide()" />
+				<p:commandButton id="cancel" value="#{i18n['button-cancel-delete']}" onclick="deleteDialog.hide()" type="button" />
+		</p:confirmDialog>
+		
+		<p:dataTable id="fencesTable" value="#{fencesManagementBean.fencesList}" var="fence" rowKey="#{fence.fenceId}" styleClass="vehicles-table" paginator="true" rows="10" rowsPerPageTemplate="5,10,15" emptyMessage="#{i18n['table-record-not-found']}">
+		
+			<f:facet name="header">
+				<p:commandButton id="createNewFence" value="Crea Nuovo" action="#{fencesManagementBean.createFence}" update=":fenceAlarmTabs:addFenceForm" oncomplete="addFence.show()" style="float:right; margin-bottom:5px;" />
+			</f:facet>
+			
+			<p:column id="name" headerText="Nome Fence">
+				#{fence.name}
+			</p:column>
+			
+			<p:column id="description" headerText="Descrizione">
+				#{fence.description}
+			</p:column>
+			
+			<p:column id="centerLon" headerText="Longitudine Centro">
+				#{fence.centerLon}
+			</p:column>
+		 
+			<p:column id="centerLat" headerText="Latitudine Centro">
+				#{fence.centerLat}
+			</p:column>
+			
+			<p:column id="radius" headerText="Raggio (metri)">
+				#{fence.radius}
+			</p:column>
+			
+			<p:column id="enabled" headerText="Abilitato">
+				#{fence.enabled}
+			</p:column>
+			
+			<p:column id="updateColumn" style="width:0%">
+				<p:commandButton id="updateFence" title="#{i18n['alarm-update']}"  oncomplete="addFence.show()" icon="ui-icon-pencil" actionListener="#{fencesManagementBean.loadFenceEntityModelBean(fence)}" />
+			</p:column>
+			
+			<p:column id="deleteColumn" style="width:0%">
+				<p:commandButton id="deleteFence" title="#{i18n['alarm-delete']}" oncomplete="deleteDialog.show()" icon="ui-icon-trash" >
+ 					<f:setPropertyActionListener value="#{fence}" target="#{fencesManagementBean.fenceEntry}" />
+				</p:commandButton>
+			</p:column>
+			
+		</p:dataTable>
+	</h:form>
+	
+	</h:body>
+</f:view>

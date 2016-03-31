@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:body>
+		<h:form id="addAlarmForm">
+		<p:dialog id="addAlarm" widgetVar="addAlarm" header="Aggiungi Allarme" modal="true" height="320" width="750" resizable="false">
+				<p:messages id="msgs" autoUpdate="true" />
+		<p:panel id="addAlarmPanel" style="background-color:#F1F1F1;">
+		        <h:panelGrid columns="5" cellpadding="10" styleClass="pf-panel-grid" columnClasses="column_1,column_3,column_2,column_1,column_3" border="0">
+		        		
+		            	<p:outputLabel for="alarmCode" value="Codice Allarme:" style="font-family:calibri;font-size:11px;"/>
+					    <p:inputText id="alarmCode" value="#{alertManagementBean.alarmEntry.alarmCode}" required="true" />
+					    <p:message for="alarmCode" />
+		            	
+						<p:outputLabel for="enable" value="Abilitato:" style="font-family:calibri;font-size:11px;" />
+		            	<p:selectOneRadio id="enable" value="#{alertManagementBean.alarmEntry.enable}" required="true">
+		            		<f:selectItem itemLabel="SI" itemValue="true" />
+		            		<f:selectItem itemLabel="NO" itemValue="false" />
+		            	</p:selectOneRadio>
+		            	<p:message for="enable" />
+		            	
+		 		</h:panelGrid>
+		 		<h:panelGrid columns="5" cellpadding="10" styleClass="pf-panel-grid" columnClasses="column_1,column_3,column_2,column_1,column_3" border="0">
+		 				
+					    <p:outputLabel for="name" value="Nome Allarme:" />
+					    <p:inputText id="name" value="#{alertManagementBean.alarmEntry.name}" required="true" />
+					    <p:message for="name" />
+		            	
+		            	<p:outputLabel for="enableMailAllarm" value="Abilita Mail:" />
+		            	<p:selectOneRadio id="enableMailAllarm" value="#{alertManagementBean.alarmEntry.enableMailAlarm}" required="true">
+		            		<f:selectItem itemLabel="SI" itemValue="true" />
+		            		<f:selectItem itemLabel="NO" itemValue="false" />
+		            		<f:ajax render="mailAddress" />
+		            	</p:selectOneRadio>
+		            	<p:message for="enableMailAllarm" />
+					    
+		        </h:panelGrid>
+		        <h:panelGrid columns="5" cellpadding="10" styleClass="pf-panel-grid" columnClasses="column_1,column_3,column_2,column_1,column_3" border="0">
+		 				
+					    <p:outputLabel for="description" value="Descrizione Allarme:" style="font-family:calibri;font-size:11px;"/>
+					    <p:inputText id="description" value="#{alertManagementBean.alarmEntry.description}" required="true" />
+					    <p:message for="description" />
+		            	
+		            	<p:outputLabel for="mailAddress" value="Indirizzo Mail:" style="font-family:calibri;font-size:11px;"/>
+		            	<p:inputText id="mailAddress" value="#{alertManagementBean.alarmEntry.mailAddress}" required="#{alertManagementBean.alarmEntry.enableMailAlarm}" disabled="#{!alertManagementBean.alarmEntry.enableMailAlarm}" />
+		            	<p:message for="enableMailAllarm" />
+					    
+		        </h:panelGrid>
+		        <h:panelGrid columns="5" cellpadding="10" styleClass="pf-panel-grid" columnClasses="column_1,column_3,column_2,column_1,column_3" border="0">
+		 				
+						<p:outputLabel for="directions" value="Direzione:" />	           
+		            	<p:selectOneMenu id="directions" value="#{alertManagementBean.alarmEntry.directions}" required="true" style="height:20px;width:112px;">
+		            		<f:selectItem itemLabel="SELEZIONA" itemValue=""/>
+		            		<f:selectItem itemLabel="ENTRA" itemValue="ingresso" />
+		            		<f:selectItem itemLabel="ESCE" itemValue="uscita" />
+		            		<f:selectItem itemLabel="ENTRAMBI" itemValue="entrambi" />
+		            	</p:selectOneMenu>
+		            	<p:message for="directions" />
+					    
+					    <p:outputLabel for="intersection" value="Gestisci Intersezione:" />
+		            	<p:selectOneRadio id="intersection" value="#{alertManagementBean.alarmEntry.intersection}" required="true">
+		            		<f:selectItem itemLabel="SI" itemValue="true" />
+		            		<f:selectItem itemLabel="NO" itemValue="false" />
+		            	</p:selectOneRadio>
+		            	<p:message for="intersection" />
+					    
+		        </h:panelGrid>
+		        <h:panelGrid columns="1" cellpadding="10" styleClass="pf-panel-grid" border="0">
+		        	<p:commandButton id="saveNewAlarm" value="Salva" action="#{alertManagementBean.saveNewAlarm}" update=":fenceAlarmTabs:alarmGridForm" oncomplete="onSaveAlarm(xhr, status, args)"/>
+		  
+		        </h:panelGrid>
+		</p:panel>
+		</p:dialog>
+		</h:form>
+</h:body>
+	
+</f:view>
